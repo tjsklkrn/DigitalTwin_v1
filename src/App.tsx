@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { MapVisualization } from './components/MapVisualization';
 import { SimulationControls } from './components/SimulationControls';
 import { KPIMetrics } from './components/KPIMetrics';
 import { InterventionPanel } from './components/InterventionPanel';
 import { Map, BarChart3, Settings } from 'lucide-react';
+
 
 // Types
 interface GridCell {
@@ -386,7 +387,7 @@ export default function App() {
                   gridData={gridData}
                   onCellClick={handleCellClick}
                   selectedCell={selectedCell}
-                  showInterventions={showInterventions}
+                  //howInterventions={showInterventions}
                 />
               </div>
               <div>
@@ -437,8 +438,9 @@ export default function App() {
                   gridData={gridData}
                   onCellClick={handleCellClick}
                   selectedCell={selectedCell}
-                  showInterventions={showInterventions}
+                  //showInterventions={showInterventions}
                 />
+                console.log("GRID DATA → ", gridData.length, gridData);
               </div>
             </div>
           </TabsContent>

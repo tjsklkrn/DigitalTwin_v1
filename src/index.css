@@ -1743,12 +1743,6 @@ html {
 }
 
 
-.leaflet-pane.leaflet-svg-pane {
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: none !important;
-}
+/* --- FIXED LEAFLET SVG PANE RULES --- */
 
+/* REMOVE Leaflet's default SVG pane override */
