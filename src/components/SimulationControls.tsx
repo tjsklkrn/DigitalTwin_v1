@@ -1,0 +1,191 @@
+import React from 'react';
+import { Button } from './ui/button';
+import { Card } from './ui/card';
+import { Slider } from './ui/slider';
+import { Badge } from './ui/badge';
+import { Play, RotateCcw, Save } from 'lucide-react';
+
+interface SimulationParameters {
+  green: number; // green areas/parks percentage
+  building: number; // building density percentage
+  water: number; // water bodies percentage
+  vehicles: number; // vehicle traffic percentage
+  industrial: number; // industrial activity percentage
+  energy: number; // energy consumption percentage
+  congestion: number; // traffic congestion percentage
+  publicTransport: number; // public transport availability percentage
+}
+
+interface SimulationControlsProps {
+  parameters: SimulationParameters;
+  onParameterChange: (key: keyof SimulationParameters, value: number) => void;
+  onRunSimulation: () => void;
+  onResetSimulation: () => void;
+  onSaveScenario: () => void;
+  isRunning: boolean;
+  currentScenario: string;
+}
+
+export function SimulationControls({
+  parameters,
+  onParameterChange,
+  onRunSimulation,
+  onResetSimulation,
+  onSaveScenario,
+  isRunning,
+  currentScenario
+}: SimulationControlsProps) {
+  return (
+    <Card className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg">Emission Factors</h3>
+        <Badge variant="outline">{currentScenario}</Badge>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm mb-2">
+            Green Areas: {parameters.green}%
+          </label>
+          <Slider
+            value={[parameters.green]}
+            onValueChange={(value) => onParameterChange('green', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">
+            Building Density: {parameters.building}%
+          </label>
+          <Slider
+            value={[parameters.building]}
+            onValueChange={(value) => onParameterChange('building', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">
+            Water Bodies: {parameters.water}%
+          </label>
+          <Slider
+            value={[parameters.water]}
+            onValueChange={(value) => onParameterChange('water', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">
+            Vehicles: {parameters.vehicles}%
+          </label>
+          <Slider
+            value={[parameters.vehicles]}
+            onValueChange={(value) => onParameterChange('vehicles', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">
+            Industrial Activity: {parameters.industrial}%
+          </label>
+          <Slider
+            value={[parameters.industrial]}
+            onValueChange={(value) => onParameterChange('industrial', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">
+            Energy Consumption: {parameters.energy}%
+          </label>
+          <Slider
+            value={[parameters.energy]}
+            onValueChange={(value) => onParameterChange('energy', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">
+            Traffic Congestion: {parameters.congestion}%
+          </label>
+          <Slider
+            value={[parameters.congestion]}
+            onValueChange={(value) => onParameterChange('congestion', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">
+            Public Transport: {parameters.publicTransport}%
+          </label>
+          <Slider
+            value={[parameters.publicTransport]}
+            onValueChange={(value) => onParameterChange('publicTransport', value[0])}
+            max={100}
+            min={0}
+            step={5}
+            className="w-full"
+          />
+        </div>
+      </div>
+
+      <div className="flex gap-2 mt-6">
+        <Button 
+          onClick={onRunSimulation}
+          disabled={isRunning}
+          className="flex-1"
+        >
+          <Play className="w-4 h-4 mr-2" />
+          {isRunning ? 'Applying...' : 'Apply Factors'}
+        </Button>
+        
+        <Button 
+          onClick={onResetSimulation}
+          variant="outline"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </Button>
+        
+        <Button 
+          onClick={onSaveScenario}
+          variant="outline"
+        >
+          <Save className="w-4 h-4" />
+        </Button>
+      </div>
+
+      <div className="mt-4 p-3 bg-blue-50 rounded-lg text-sm">
+        <p className="text-blue-800">
+          💡 <span>Tip:</span> Adjust factors to see real-time impact on CO₂ emissions across the neighborhood map.
+        </p>
+      </div>
+    </Card>
+  );
+}
