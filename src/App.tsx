@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
 import { toast } from "sonner";
-import { MapVisualization } from './components/MapVisualization';
+import { FixedGridMap } from './components/FixedGridMap';
 import { SimulationControls } from './components/SimulationControls';
 import { KPIMetrics } from './components/KPIMetrics';
 import { InterventionPanel } from './components/InterventionPanel';
@@ -220,9 +220,31 @@ export default function App() {
     { type: 'Transport', baseline: 290, current: 275 }
   ];
 
+  // Convert grid data to 2D emissions array for FixedGridMap
+  const cellEmissions: number[][] = React.useMemo(() => {
+    const emissions: number[][] = [];
+    for (let row = 0; row < 12; row++) {
+      emissions[row] = [];
+      for (let col = 0; col < 12; col++) {
+        const index = row * 12 + col;
+        const cell = gridData[index];
+        emissions[row][col] = cell ? cell.emission : 0;
+      }
+    }
+    return emissions;
+  }, [gridData]);
+
   // Event handlers
   const handleCellClick = (cell: GridCell) => {
     setSelectedCell(cell);
+  };
+
+  const handleCellSelect = (data: { row: number; col: number; cellId: string; bounds: [[number, number], [number, number]] }) => {
+    const index = data.row * 12 + data.col;
+    const cell = gridData[index];
+    if (cell) {
+      setSelectedCell(cell);
+    }
   };
 
   const handleParameterChange = (key: keyof SimulationParameters, value: number) => {
@@ -383,11 +405,9 @@ export default function App() {
           <TabsContent value="map" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <MapVisualization
-                  gridData={gridData}
-                  onCellClick={handleCellClick}
-                  selectedCell={selectedCell}
-                  //howInterventions={showInterventions}
+                <FixedGridMap
+                  cellEmissions={cellEmissions}
+                  onCellSelect={handleCellSelect}
                 />
               </div>
               <div>
@@ -434,13 +454,10 @@ export default function App() {
                 currentScenario={currentScenario}
               />
               <div className="lg:col-span-2">
-                <MapVisualization
-                  gridData={gridData}
-                  onCellClick={handleCellClick}
-                  selectedCell={selectedCell}
-                  //showInterventions={showInterventions}
+                <FixedGridMap
+                  cellEmissions={cellEmissions}
+                  onCellSelect={handleCellSelect}
                 />
-                console.log("GRID DATA → ", gridData.length, gridData);
               </div>
             </div>
           </TabsContent>
