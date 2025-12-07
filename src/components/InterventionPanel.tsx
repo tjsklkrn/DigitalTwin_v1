@@ -392,22 +392,6 @@ export function InterventionPanel({
             })}
           </div>
 
-          {/* ------------------ Selected Intervention Details ------------------ */}
-          {selectedIntervention && (
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <Info className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium">Intervention Details</span>
-              </div>
-              <div className="text-sm space-y-1">
-                <p><strong>Name:</strong> {selectedIntervention.name}</p>
-                <p><strong>Efficiency:</strong> -{selectedIntervention.efficiency}%</p>
-                <p><strong>Cost:</strong> ${selectedIntervention.cost}</p>
-                <p><strong>Suitable for:</strong> {selectedIntervention.suitableFor.join(', ')}</p>
-                <p className="text-gray-600">{selectedIntervention.description}</p>
-              </div>
-            </div>
-          )}
         </TabsContent>
 
         {/* ------------------ MANAGE TAB --------------------- */}

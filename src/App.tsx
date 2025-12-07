@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
+import { Card } from './components/ui/card';
 import { toast } from "sonner";
 import { FixedGridMap } from './components/FixedGridMap';
 import { SimulationControls } from './components/SimulationControls';
@@ -679,15 +680,6 @@ export default function App() {
                 Simulate, visualize, and plan carbon capture strategies for urban neighborhoods
               </p>
             </div>
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowInterventions(!showInterventions)}
-              >
-                {showInterventions ? 'Hide' : 'Show'} Interventions
-              </Button>
-            </div>
           </div>
         </div>
 
@@ -726,12 +718,55 @@ export default function App() {
 
           <TabsContent value="map" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
+              {/* Map - takes full left width */}
+              <div className="lg:col-span-2 space-y-6">
                 <FixedGridMap
                   cellEmissions={cellEmissions}
                   onCellSelect={handleCellSelect}
                 />
+                
+                {/* Intervention Details Card - appears below map when intervention is selected */}
+                {selectedIntervention && (
+                  <Card className="p-4 animate-in slide-in-from-top duration-300">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-2xl">{selectedIntervention.icon}</span>
+                      <h3 className="text-lg font-semibold">Intervention Details</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Name</p>
+                        <p className="text-sm font-medium">{selectedIntervention.name}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Efficiency</p>
+                        <p className="text-sm font-medium text-green-600">
+                          -{selectedIntervention.efficiency}% CO₂ reduction
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Cost</p>
+                        <p className="text-sm font-medium">${selectedIntervention.cost.toLocaleString()} per unit</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Suitable For</p>
+                        <div className="flex flex-wrap gap-1">
+                          {selectedIntervention.suitableFor.map((type) => (
+                            <Badge key={type} variant="outline" className="text-xs">
+                              {type}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="md:col-span-2">
+                        <p className="text-sm text-gray-600 mb-1">Description</p>
+                        <p className="text-sm text-gray-700">{selectedIntervention.description}</p>
+                      </div>
+                    </div>
+                  </Card>
+                )}
               </div>
+              
+              {/* Intervention List - right side only */}
               <div>
                 <InterventionPanel
                   availableInterventions={availableInterventions}
